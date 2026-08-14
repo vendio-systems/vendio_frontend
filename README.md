@@ -100,8 +100,10 @@ vendio-front_end/
 
 ---
 
-## 📝 Licença
+## ⚖️ MIT License
 
-Este projeto está licenciado sob a licença [MIT](LICENSE) — veja o arquivo [`LICENSE`](LICENSE) para mais detalhes.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Este projeto está licenciado sob a **[MIT License](LICENSE)** — veja o arquivo [`LICENSE`](LICENSE) para mais detalhes.
 
 Desenvolvido para o ecossistema **Vendio Systems**.
