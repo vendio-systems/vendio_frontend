@@ -88,6 +88,7 @@ vendio-front_end/
 ├── public/                # Arquivos estáticos (imagens, ícones)
 ├── package.json           # Dependências e scripts do projeto
 ├── tsconfig.json          # Configuração do TypeScript
+├── LICENSE                # Licença do projeto (MIT)
 └── README.md              # Documentação do projeto
 ```
 
@@ -100,5 +101,7 @@ vendio-front_end/
 ---
 
 ## 📝 Licença
+
+Este projeto está licenciado sob a licença [MIT](LICENSE) — veja o arquivo [`LICENSE`](LICENSE) para mais detalhes.
 
 Desenvolvido para o ecossistema **Vendio Systems**.
