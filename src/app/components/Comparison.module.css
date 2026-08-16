@@ -1,0 +1,177 @@
+.section {
+  padding: 80px 0;
+  background: #ffffff;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comparisonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.cardOld {
+  background: #fdf2f2;
+  border: 1px solid #fee2e2;
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  position: relative;
+}
+
+.cardHeaderOld {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #fecaca;
+}
+
+.cardIconOld {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: #fee2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardTitleOld {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #991b1b;
+}
+
+.cardSubtitleOld {
+  font-size: 0.88rem;
+  color: #b91c1c;
+}
+
+.cardVendio {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+}
+
+.badgePopular {
+  position: absolute;
+  top: -14px;
+  right: 28px;
+  background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}
+
+.cardHeaderVendio {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e7ff;
+}
+
+.cardIconVendio {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardTitleVendio {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.cardSubtitleVendio {
+  font-size: 0.88rem;
+  color: #4338ca;
+}
+
+.pointsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pointItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.pointIconOld {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fca5a5;
+  color: #7f1d1d;
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pointTitleOld {
+  display: block;
+  font-size: 1rem;
+  color: #7f1d1d;
+  margin-bottom: 0.25rem;
+}
+
+.pointDesc {
+  font-size: 0.88rem;
+  color: #991b1b;
+  line-height: 1.5;
+}
+
+.pointIconVendio {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #10b981;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pointTitleVendio {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.pointDescVendio {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .comparisonGrid {
+    grid-template-columns: 1fr;
+  }
+}
