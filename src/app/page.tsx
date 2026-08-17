@@ -1,69 +1,18 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
+"use client";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-
+type AuthMode = "login" | "register" | null;
+const stats = [["Vendas hoje", "R$ 2.840,00", "↑ 18,2%"], ["Pedidos", "24", "↑ 12,5%"], ["Ticket médio", "R$ 118,33", "↑ 4,3%"], ["Em estoque", "369", "3 produtos baixos"]];
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
-}
+ const router=useRouter();
+ const [auth,setAuth]=useState<AuthMode>(null),[feedback,setFeedback]=useState(""),[busy,setBusy]=useState(false);
+ async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);setFeedback("");const body=Object.fromEntries(new FormData(e.currentTarget));try{const res=await fetch(`/api/auth/${auth}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const json=await res.json();if(!res.ok){setFeedback(json.message??"Não foi possível autenticar.");return}setFeedback(auth==="login"?"Login realizado. Abrindo seu painel...":"Conta criada. Preparando sua loja...");router.replace(json.next??"/dashboard");router.refresh()}catch{setFeedback("Não foi possível conectar ao servidor.")}finally{setBusy(false)}}
+ return <main className={styles.page}>
+  <header className={styles.header}><a href="#inicio"><img src="/vendio.svg" alt="Vendio"/></a><nav><a href="#recursos">Recursos</a><a href="#planos">Planos</a><a href="#seguranca">Segurança</a></nav><div><button className={styles.ghost} onClick={()=>setAuth("login")}>Entrar</button><button className={styles.primary} onClick={()=>setAuth("register")}>Começar grátis →</button></div></header>
+  <section id="inicio" className={styles.hero}><span className={styles.badge}>✦ Gestão que acompanha seu negócio</span><h1>Seu negócio inteiro.<br/><em>Em um só lugar.</em></h1><p>Vendas, estoque, financeiro e sua loja online trabalhando juntos para você vender mais, todos os dias.</p><div className={styles.actions}><button className={styles.primary} onClick={()=>setAuth("register")}>Crie sua loja grátis →</button><a href="#recursos">▶ Ver como funciona</a></div><small>✓ Sem cartão de crédito　 ✓ Configure em minutos　 ✓ Cancele quando quiser</small></section>
+  <section className={styles.preview}><div className={styles.topbar}><span><img src="/vendio-mark.svg" alt=""/> vendio</span><span>⌕ Buscar...　 ◇　 <b>MA</b></span></div><div className={styles.app}><aside><small>MENU PRINCIPAL</small><a className={styles.active}>▦　Visão geral</a><a>⌂　Minha loja</a><a>□　Produtos</a><a>▱　Pedidos</a><a>◉　Financeiro</a><small>GERENCIAMENTO</small><a>♙　Clientes</a><a>↗　Relatórios</a><span className={styles.support}>? <i>Precisa de ajuda?<br/>Fale com nosso time</i></span><a>⚙　Configurações</a></aside><section className={styles.panel}><div className={styles.greeting}><div><small>DOMINGO, 17 DE AGOSTO</small><h2>Bom dia, Mariana 👋</h2><p>Aqui está o resumo da sua loja hoje.</p></div><button>+ Novo pedido</button></div><div className={styles.stats}>{stats.map((s,i)=><article key={s[0]}><span>{s[0]}</span><strong>{s[1]}</strong><em className={i===3?styles.warn:""}>{s[2]}</em><b>{["▱","□","↗","⌂"][i]}</b></article>)}</div><div className={styles.twoCols}><article className={styles.chart}><h3>Vendas da semana</h3><small>Receita total por dia</small><div><span>R$ 4k<br/><br/>R$ 3k<br/><br/>R$ 2k<br/><br/>R$ 1k<br/><br/>R$ 0</span><svg viewBox="0 0 600 210" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop stopColor="#6339e8" stopOpacity=".27"/><stop offset="1" stopColor="#6339e8" stopOpacity="0"/></linearGradient></defs><path d="M0 190V142l100-23 100 27 100-82 100 40 100-83 100 45v124Z" fill="url(#g)"/><path d="M0 142l100-23 100 27 100-82 100 40 100-83 100 45" fill="none" stroke="#6339e8" strokeWidth="4"/></svg></div><footer>Seg　　Ter　　Qua　　Qui　　Sex　　Sáb　　Dom</footer></article><article className={styles.orders}><h3>Pedidos recentes</h3><small>Últimas vendas da loja</small>{["Ana Souza","Carlos Lima","Beatriz Rocha"].map((n,i)=><div key={n}><b>{n.split(" ").map(x=>x[0]).join("")}</b><span><strong>#{1024-i}　{n}</strong><small>há {5+i*13} min</small></span><em>R$ {i===0?"249,90":i===1?"189,00":"79,90"}</em></div>)}</article></div><article className={styles.stock}><h3>Estoque em destaque</h3><small>Acompanhe seus produtos</small><table><thead><tr><th>PRODUTO</th><th>ESTOQUE</th><th>PREÇO</th><th>STATUS</th></tr></thead><tbody>{[["Camiseta Essential","42 un.","R$ 79,90","Estoque saudável"],["Tênis Urban","8 un.","R$ 189,90","Atenção ao estoque"],["Boné Vendio","19 un.","R$ 59,90","Estoque saudável"]].map(r=><tr key={r[0]}><td><i/>{r[0]}</td><td>{r[1]}</td><td>{r[2]}</td><td><b className={r[3].startsWith("Atenção")?styles.low:""}>{r[3]}</b></td></tr>)}</tbody></table></article></section></div></section>
+  <section id="recursos" className={styles.features}><small>UMA PLATAFORMA, TODA A OPERAÇÃO</small><h2>Menos planilhas. Mais <em>resultado.</em></h2><p>Tenha controle total do seu negócio sem complicação.</p><div>{[["01","Loja online integrada","Venda onde seus clientes estão, com catálogo e pedidos sincronizados."],["02","Estoque inteligente","Saiba exatamente o que entra e sai. Receba alertas antes de faltar."],["03","Financeiro descomplicado","Entenda seus números e tome decisões melhores para crescer."]].map(x=><article key={x[0]}><b>{x[0]}</b><h3>{x[1]}</h3><p>{x[2]}</p></article>)}</div></section><footer className={styles.footer}><img src="/vendio.svg" alt="Vendio"/><span>© 2026 Vendio. Feito para quem faz acontecer.</span><a href="#seguranca">Privacidade</a></footer>
+  {auth&&<div className={styles.overlay}><section className={styles.modal} role="dialog" aria-modal="true"><button className={styles.close} onClick={()=>setAuth(null)}>×</button><img src="/vendio.svg" alt="Vendio"/><h2>{auth==="login"?"Que bom ver você.":"Crie sua conta grátis."}</h2><p>{auth==="login"?"Acesse o painel da sua loja.":"Comece a centralizar seu negócio hoje."}</p><form onSubmit={submit}>{auth==="register"&&<><label>Nome completo<input name="name" required minLength={3} maxLength={80}/></label><label>Nome da loja<input name="storeName" required minLength={3} maxLength={60}/></label></>}<label>E-mail<input type="email" name="email" required maxLength={254}/></label><label>Senha<input type="password" name="password" required minLength={10} maxLength={128} placeholder="Mínimo de 10 caracteres"/></label>{feedback&&<output>{feedback}</output>}<button className={styles.primary} disabled={busy}>{busy?"Aguarde...":auth==="login"?"Entrar na Vendio →":"Criar conta →"}</button></form><button className={styles.switch} onClick={()=>setAuth(auth==="login"?"register":"login")}>{auth==="login"?"Ainda não tem conta? Criar agora":"Já tem conta? Entrar"}</button></section></div>}
+ </main>}

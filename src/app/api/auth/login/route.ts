@@ -1,0 +1,5 @@
+import { NextResponse } from "next/server";
+import { createSession, login } from "@/lib/auth";
+import { issueCsrfToken, rateLimit } from "@/lib/request-security";
+export const runtime = "nodejs";
+export async function POST(request: Request) { const retryAfter = rateLimit(request, "login", 8); if (retryAfter) return NextResponse.json({ message: "Muitas tentativas. Aguarde antes de tentar novamente." }, { status: 429, headers: { "Retry-After": String(retryAfter) } }); try { const user = login(await request.json()); const response = NextResponse.json({ message: "Login realizado", next: "/dashboard", user: { id: user.id, name: user.name, role: user.role, storeName: user.storeName } }); response.cookies.set("vendio_session", createSession(user), { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", priority: "high", path: "/", maxAge: 60 * 60 * 8 }); response.cookies.set("vendio_csrf", issueCsrfToken(), { secure: process.env.NODE_ENV === "production", sameSite: "strict", priority: "high", path: "/", maxAge: 60 * 60 * 8 }); return response; } catch { return NextResponse.json({ message: "E-mail ou senha inválidos." }, { status: 401 }); } }

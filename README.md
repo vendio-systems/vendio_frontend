@@ -1,109 +1,50 @@
-# Vendio Frontend 🛍️
+# Vendio
 
-Plataforma frontend moderna desenvolvida em **Next.js** para o ecossistema **Vendio** — um SaaS completo de e-commerce, gestão de vendas, produtos, clientes e vitrines personalizadas para lojistas.
+SaaS full-stack em Next.js que unifica loja virtual, pedidos, produtos, estoque, clientes, financeiro, métricas e gestão operacional de pequenos negócios.
 
----
+## Executar localmente
 
-## 📌 Sobre o Projeto
+Requer Node.js 24 ou mais recente, pois a persistência local usa o módulo nativo `node:sqlite`.
 
-O **Vendio** é uma solução completa para lojistas e empreendedores que buscam gerenciar suas operações de vendas online e físicas de forma simplificada, elegante e eficiente. 
-
-Este repositório contém a aplicação web frontend construída com **Next.js (App Router)** e **TypeScript**, responsável pelas interfaces administrativas da plataforma, área do cliente e vitrines públicas de lojas.
-
----
-
-## ✨ Principais Funcionalidades
-
-- **📊 Dashboard Administrativo**: Visão consolidada de desempenho, métricas de vendas, faturamento e atividades recentes.
-- **📦 Gestão de Produtos**: Cadastro de itens, controle de estoque, preços e categorização.
-- **💳 Gestão de Vendas & Financeiro**: Histórico de pedidos, status de pagamento, relatórios financeiros e fluxo de caixa.
-- **👥 Gestão de Clientes**: CRM integrado para gerenciamento da base de compradores e histórico de consumo.
-- **🛍️ Storefront Publica (`/loja/[slug]`)**: Vitrine personalizada e responsiva para que cada lojista exiba e venda seus produtos diretamente aos clientes.
-- **🚚 Área do Cliente ("Minhas Compras")**: Espaço para compradores finais acompanharem o status de seus pedidos e histórico de compras.
-- **⚙️ Configurações & Suporte**: Personalização da loja, preferências da conta e canal de atendimento.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Framework**: [Next.js](https://nextjs.org/) (App Router, React 19)
-- **Linguagem**: [TypeScript](https://www.typescriptlang.org/)
-- **Estilização**: CSS Vanilla / CSS Modules
-- **Linter & Formatador**: ESLint
-- **Integração Backend**: Supabase / APIs REST ([Vendio Backend](https://github.com/gustaaxz/vendio))
-
----
-
-## 🚀 Como Executar o Projeto
-
-### Pré-requisitos
-
-- **Node.js**: `v18.x` ou superior instalado
-- **npm** (ou `pnpm` / `yarn` / `bun`)
-
-### Passos para execução
-
-1. **Clonar o repositório:**
-   ```bash
-   git clone https://github.com/vendio-systems/vendio_frontend.git
-   cd vendio-front_end
-   ```
-
-2. **Instalar as dependências:**
-   ```bash
-   npm install
-   ```
-
-3. **Iniciar o servidor de desenvolvimento:**
-   ```bash
-   npm run dev
-   ```
-
-4. Abrir [http://localhost:3000](http://localhost:3000) no navegador para visualizar a aplicação.
-
----
-
-## 📜 Scripts Disponíveis
-
-No arquivo `package.json`, estão disponíveis os seguintes comandos:
-
-| Comando | Descrição |
-| :--- | :--- |
-| `npm run dev` | Inicia o servidor de desenvolvimento do Next.js |
-| `npm run build` | Cria a versão otimizada de produção da aplicação |
-| `npm run start` | Inicia o servidor Node.js com o build de produção |
-| `npm run lint` | Executa a verificação estática de código com ESLint |
-
----
-
-## 📁 Estrutura do Projeto
-
-```text
-vendio-front_end/
-├── src/
-│   └── app/               # Rotas e páginas do Next.js (App Router)
-│       ├── layout.tsx     # Root layout da aplicação
-│       ├── page.tsx       # Página inicial
-│       └── globals.css    # Estilos globais
-├── public/                # Arquivos estáticos (imagens, ícones)
-├── package.json           # Dependências e scripts do projeto
-├── tsconfig.json          # Configuração do TypeScript
-├── LICENSE                # Licença do projeto (MIT)
-└── README.md              # Documentação do projeto
+```bash
+npm install
+npm run dev
 ```
 
----
+Acesse [http://localhost:3000](http://localhost:3000), crie uma conta e o sistema abrirá `/dashboard`. Cada cadastro recebe uma loja com dados iniciais e uma vitrine pública em `/loja/[slug]`.
 
-## 🔗 Repositórios Relacionados
+## Módulos
 
-- **Backend / Plataforma Base**: [gustaaxz/vendio](https://github.com/gustaaxz/vendio)
+- Dashboard com KPIs, pedidos recentes e estoque crítico.
+- Produtos, arquivamento, mapa e movimentações de estoque.
+- Pedidos com fluxo validado de status e itens persistidos.
+- Clientes, fornecedores, compras, entregas, cupons e integrações.
+- Financeiro, métricas, notificações e três exportações CSV.
+- Configuração da loja, equipe com RBAC e auditoria.
+- Storefront público com sacola e checkout transacional.
 
----
+## Segurança
 
-## ⚖️ MIT License
+- Senhas com `scrypt`, salt individual e comparação timing-safe.
+- JWT HS256 de oito horas vinculado a uma sessão revogável no banco.
+- Cookies HttpOnly/Secure, CSRF, rate limit, CSP, HSTS e demais headers.
+- Queries SQL parametrizadas, transações, constraints e isolamento por `store_id`.
+- Matriz de cargos: Visitante, Cliente, Administrador, Desenvolvedor e Dono.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+Copie [`.env.example`](./.env.example) e configure um `JWT_SECRET` aleatório com pelo menos 32 caracteres antes de executar em produção.
 
-Este projeto está licenciado sob a **[MIT License](LICENSE)** — veja o arquivo [`LICENSE`](LICENSE) para mais detalhes.
+## Scripts
 
-Desenvolvido para o ecossistema **Vendio Systems**.
+```bash
+npm run dev       # servidor de desenvolvimento
+npm run lint      # ESLint
+npx tsc --noEmit  # verificação TypeScript
+npm run build     # build de produção
+npm run start     # servir o build
+```
+
+## Persistência e produção
+
+O ambiente local usa `data/vendio.sqlite`, ignorado pelo Git. Para múltiplas instâncias, migre SQLite para PostgreSQL e o rate limit para Redis; configure também provedor de e-mail, pagamentos, logística, arquivos, observabilidade e backups.
+
+Os [100 requisitos](./REQUIREMENTS.md), a [análise ERP](./ERP_BLUEPRINT.md) e a [auditoria técnica](./SYSTEM_AUDIT.md) acompanham o projeto.

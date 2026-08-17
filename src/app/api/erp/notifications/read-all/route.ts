@@ -1,0 +1,4 @@
+import { db, nowIso } from "@/lib/database";
+import { requireRole, verifyCsrf } from "@/lib/request-security";
+export const runtime = "nodejs";
+export async function POST(request: Request) { const access = requireRole(request, ["CLIENT", "ADMIN", "DEVELOPER", "OWNER"]); if ("error" in access || !access.session.storeId) return Response.json({ message: "error" in access ? access.error : "Loja não encontrada." }, { status: "error" in access ? access.status : 404 }); if (!verifyCsrf(request)) return Response.json({ message: "Token CSRF inválido." }, { status: 403 }); const result = db.prepare("UPDATE notifications SET read_at = ? WHERE store_id = ? AND read_at IS NULL").run(nowIso(), access.session.storeId); return Response.json({ message: "Notificações marcadas como lidas.", updated: Number(result.changes) }); }
